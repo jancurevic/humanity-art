@@ -1,6 +1,6 @@
-import heroImage from "@/assets/hero.JPG";
-import ethiopiaTitle from "@/assets/ethiopia-title.svg";
-import humanityTitle from "@/assets/humanity.svg";
+import heroImage from "../assets/hero.JPG";
+import ethiopiaTitle from "../assets/ethiopia-title.svg";
+import humanityTitle from "../assets/humanity.svg";
 
 const Index = () => {
   return (
