@@ -17,4 +17,12 @@ export default defineConfig(({ mode }) => ({
     },
   },
   assetsInclude: ["**/*.JPG"],
+  build: {
+    assetsDir: "assets",
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+      },
+    },
+  },
 }));
