@@ -1,15 +1,31 @@
+import heroImage from "@/assets/hero.JPG";
+import ethiopiaTitle from "@/assets/ethiopia-title.svg";
+import humanityTitle from "@/assets/humanity.svg";
+
 const Index = () => {
   return (
     <div className="snap-y snap-mandatory h-screen overflow-y-scroll">
       {/* Hero Section */}
-      <section className="snap-start h-screen flex items-center justify-center bg-background border-b border-border">
-        <div className="text-center px-4">
-          <h1 className="text-6xl md:text-8xl font-bold mb-6 text-foreground">
-            Analog
-          </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground">
-            A Photography Exhibition
-          </p>
+      <section 
+        className="snap-start h-screen flex items-center justify-center bg-background border-b border-border relative"
+        style={{
+          backgroundImage: `url(${heroImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        <div className="absolute inset-0 bg-background/40" />
+        <div className="text-center px-4 relative z-10">
+          <img 
+            src={ethiopiaTitle} 
+            alt="Ethiopia - Land of Origins" 
+            className="mx-auto mb-6 max-w-[90%] md:max-w-2xl h-auto invert"
+          />
+          <img 
+            src={humanityTitle} 
+            alt="Humanity" 
+            className="mx-auto max-w-[90%] md:max-w-2xl h-auto invert"
+          />
         </div>
       </section>
 
