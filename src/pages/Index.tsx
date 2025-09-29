@@ -14,17 +14,17 @@ const Index = () => {
           backgroundPosition: 'center',
         }}
       >
-        <div className="absolute inset-0 bg-background/40" />
-        <div className="text-center px-4 relative z-10">
+        {/* <div className="absolute inset-0 bg-background/10" /> */}
+        <div className=" w-full h-full text-center px-4 relative z-10 bg-black p-2 rounded-md bg-opacity-30 flex flex-col items-center justify-center">
           <img 
             src={humanityTitle} 
             alt="Humanity" 
-            className="mx-auto mb-6 max-w-[90%] md:max-w-2xl h-auto invert opacity-70 blur-[0.5px]"
+            className="mx-auto mb-6 max-w-[90%] md:max-w-2xl h-auto invert blur-[0.5px]"
           />
           <img 
             src={ethiopiaTitle} 
             alt="Ethiopia - Land of Origins" 
-            className="mx-auto max-w-[90%] md:max-w-2xl h-auto invert opacity-70 blur-[0.5px]"
+            className="mx-auto max-w-[90%] md:max-w-2xl h-auto invert blur-[0.5px]"
           />
         </div>
       </section>
@@ -64,15 +64,15 @@ const Index = () => {
           <div className="space-y-6 text-foreground">
             <div className="border-l-2 border-foreground pl-6">
               <h3 className="text-xl font-bold mb-2">Date</h3>
-              <p className="text-muted-foreground">TBA</p>
+              <p className="text-muted-foreground">04.10.2025 - 05.10.2025</p>
             </div>
             <div className="border-l-2 border-foreground pl-6">
               <h3 className="text-xl font-bold mb-2">Location</h3>
-              <p className="text-muted-foreground">TBA</p>
+              <p className="text-muted-foreground">Pawilon Bliska 12</p>
             </div>
             <div className="border-l-2 border-foreground pl-6">
               <h3 className="text-xl font-bold mb-2">Opening Hours</h3>
-              <p className="text-muted-foreground">TBA</p>
+              <p className="text-muted-foreground">1PM - 10PM</p>
             </div>
           </div>
         </div>
