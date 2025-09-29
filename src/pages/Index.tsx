@@ -17,14 +17,14 @@ const Index = () => {
         <div className="absolute inset-0 bg-background/40" />
         <div className="text-center px-4 relative z-10">
           <img 
-            src={ethiopiaTitle} 
-            alt="Ethiopia - Land of Origins" 
-            className="mx-auto mb-6 max-w-[90%] md:max-w-2xl h-auto invert"
-          />
-          <img 
             src={humanityTitle} 
             alt="Humanity" 
-            className="mx-auto max-w-[90%] md:max-w-2xl h-auto invert"
+            className="mx-auto mb-6 max-w-[90%] md:max-w-2xl h-auto invert opacity-70 blur-[0.5px]"
+          />
+          <img 
+            src={ethiopiaTitle} 
+            alt="Ethiopia - Land of Origins" 
+            className="mx-auto max-w-[90%] md:max-w-2xl h-auto invert opacity-70 blur-[0.5px]"
           />
         </div>
       </section>
