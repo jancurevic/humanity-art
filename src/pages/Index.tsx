@@ -47,10 +47,10 @@ const Index = () => {
       <section className="snap-start h-screen flex items-center justify-center bg-background border-b border-border">
         <div className="text-center px-4">
           <h2 className="text-4xl md:text-6xl font-bold mb-8 text-foreground">
-            Gallery
+            Voting
           </h2>
           <p className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto">
-            Coming soon: A curated collection of analog photographs
+            Coming soon: Choose your favorite pictures from the exhibition
           </p>
         </div>
       </section>
