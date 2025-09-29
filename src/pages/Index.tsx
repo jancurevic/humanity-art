@@ -6,6 +6,7 @@ import aboutImage from "../assets/hero3.JPG";
 import prevImage from "../assets/prev.jpg";
 import contactImage from "../assets/contact.jpg";
 
+import Voting from "./Voting";
 
 const Index = () => {
   return (
@@ -54,15 +55,16 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Gallery Preview Section */}
+      {/* Voting Section */}
       <section className="snap-start h-screen flex items-center justify-center bg-background border-b border-border">
-        <div className="text-center px-4">
-          <h2 className="text-4xl md:text-6xl font-bold mb-8 text-foreground">
+        <div className="w-full max-w-4xl px-4">
+          <h2 className="text-4xl md:text-6xl font-bold mb-8 text-foreground text-center">
             Voting
           </h2>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto">
-            Coming soon: Choose your favorite pictures from the exhibition
+          <p className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto text-center mb-8">
+            Choose your favorite pictures from the exhibition
           </p>
+          <Voting />
         </div>
       </section>
 
