@@ -50,7 +50,7 @@ const Index = () => {
             About
           </h2>
           <p className="text-lg md:text-xl text-foreground leading-relaxed">
-            The Humanity Exhibition by Jake Lewis-Hurn is a global journey through photography, capturing people from every walk of life and culture. At its heart, it’s a reminder that while we may look different on the outside, we share the same human spirit within. This exhibition invites us to travel deeper — not as tourists, but as participants — immersing ourselves in the stories, traditions, and connections that make us one humanity.
+            The Humanity Exhibition by <span className="whitespace-nowrap">Jake Lewis-Hurn</span> is a global journey through photography, capturing people from every walk of life and culture. At its heart, it’s a reminder that while we may look different on the outside, we share the same human spirit within. This exhibition invites us to travel deeper — not as tourists, but as participants — immersing ourselves in the stories, traditions, and connections that make us one humanity.
           </p>
         </div>
       </section>
@@ -84,23 +84,47 @@ const Index = () => {
           </h2>
           <div className="space-y-6 text-foreground">
             <div className="border-l-2 border-foreground pl-6">
-              <h3 className="text-xl font-bold mb-2">Date</h3>
-              <p className="text-muted-foreground">04.10.2025 - 05.10.2025</p>
+              <h3 className="text-xl font-bold mb-2">Exhibition Schedule</h3>
+              <div className="space-y-2 text-gray-300">
+                <div className="flex items-center space-x-2">
+                  <svg className="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <span className="font-medium text-gray-300">Friday, 04.10.2025</span>
+                  <span className="text-sm text-gray-300">•</span>
+                  <svg className="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span className="text-gray-300">1PM - 10PM</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <svg className="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <span className="font-medium text-gray-300">Saturday, 05.10.2025</span>
+                  <span className="text-sm text-gray-300">•</span>
+                  <svg className="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span className="text-gray-300">12PM - 5PM</span>
+                </div>
+              </div>
             </div>
             <div className="border-l-2 border-foreground pl-6">
               <h3 className="text-xl font-bold mb-2">Location</h3>
               <a
                 target="_blank"
                 href="https://maps.app.goo.gl/XkEe3s2gxVa5G8a49"
-                className="text-muted-foreground"
+                className="inline-flex items-center space-x-2 text-gray-300 hover:text-primary transition-colors duration-200 underline decoration-2 underline-offset-4 hover:decoration-primary font-medium"
               >
-                Pawilon Bliska 12
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span>Pawilon Bliska 12</span>
               </a>
             </div>
-            <div className="border-l-2 border-foreground pl-6">
-              <h3 className="text-xl font-bold mb-2">Opening Hours</h3>
-              <p className="text-muted-foreground">1PM - 10PM</p>
-            </div>
+
           </div>
         </div>
       </section>
