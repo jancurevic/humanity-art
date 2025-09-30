@@ -19,7 +19,6 @@ const Index = () => {
           backgroundPosition: "center",
         }}
       >
-        {/* <div className="absolute inset-0 bg-background/10" /> */}
         <div className=" w-full h-full text-center px-4 relative z-10 bg-black p-2 rounded-md bg-opacity-30 flex flex-col items-center justify-center">
           <img
             src={humanityTitle}
@@ -162,11 +161,9 @@ const Index = () => {
       <section id="contact" className="snap-start h-screen flex items-center justify-center bg-background relative">
         {/* Background image with opacity */}
         <div 
-          className="absolute inset-0 opacity-30 z-0"
+          className="absolute inset-0 opacity-30 z-0 bg-cover bg-right md:bg-center"
           style={{
             backgroundImage: `url(${contactImage})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
           }}
         />
         <div className="text-center px-4 max-w-2xl relative z-10">
