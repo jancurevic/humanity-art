@@ -1,26 +1,8 @@
 import { useEffect, useState } from "react";
 import { db, auth } from "../firebase";
-import { doc, getDoc, setDoc, arrayUnion, increment } from "firebase/firestore";
-import image1 from "../assets/vote/1.jpg";
-import image2 from "../assets/vote/2.jpg";
-import image3 from "../assets/vote/3.jpg";
+import { doc, getDoc, setDoc, arrayUnion, increment, onSnapshot } from "firebase/firestore";
+import { images } from "./images";
 
-
-
-const images = [
-  { id: "1", url: image1 },
-  { id: "2", url: image2 },
-  { id: "3", url: image3 },
-  { id: "4", url: image1 },
-  { id: "5", url: image2 },
-  { id: "6", url: image3 },
-  { id: "7", url: image1 },
-  { id: "8", url: image2 },
-  { id: "9", url: image3 },
-  { id: "10", url: image1 },
-  { id: "11", url: image2 },
-  { id: "12", url: image3 }
-];
 
 
 export default function Voting() {
@@ -28,7 +10,7 @@ export default function Voting() {
   const [votesCount, setVotesCount] = useState({});
   const [selectedImage, setSelectedImage] = useState(null);
 
-  // Load user votes and vote counts
+  // Load user votes and set up real-time vote count listeners
   useEffect(() => {
     const loadUserVotes = async () => {
       if (!auth.currentUser) return;
@@ -39,17 +21,32 @@ export default function Voting() {
       else setUserVotes([]);
     };
 
-    const loadVotesCount = async () => {
-      const counts = {};
-      for (const img of images) {
-        const imgDoc = await getDoc(doc(db, "images", img.id));
-        counts[img.id] = imgDoc.exists() ? imgDoc.data().votes : 0;
-      }
-      setVotesCount(counts);
+    // Set up real-time listeners for vote counts
+    const setupVoteCountListeners = () => {
+      const unsubscribers = [];
+      
+      images.forEach(img => {
+        const imageDoc = doc(db, "images", img.id);
+        const unsubscribe = onSnapshot(imageDoc, (docSnapshot) => {
+          const votes = docSnapshot.exists() ? docSnapshot.data().votes || 0 : 0;
+          setVotesCount(prevCounts => ({
+            ...prevCounts,
+            [img.id]: votes
+          }));
+        });
+        unsubscribers.push(unsubscribe);
+      });
+
+      return unsubscribers;
     };
 
     loadUserVotes();
-    loadVotesCount();
+    const unsubscribers = setupVoteCountListeners();
+
+    // Cleanup function to unsubscribe from all listeners
+    return () => {
+      unsubscribers.forEach(unsubscribe => unsubscribe());
+    };
   }, []);
 
   const handleVote = async (imageId) => {
@@ -85,10 +82,12 @@ export default function Voting() {
                 <img 
                   src={img.url} 
                   alt={`Photo ${img.id}`} 
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300 blur-lg"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
-              <div className="p-4 flex items-center justify-between">
+              <div className="p-4 flex items-center justify-center">
                 <div className="flex items-center space-x-2">
                   <button 
                     onClick={() => handleVote(img.id)} 
@@ -119,9 +118,6 @@ export default function Voting() {
                     {votesCount[img.id] || 0}
                   </span>
                 </div>
-                <span className="text-sm text-muted-foreground">
-                  Photo {img.id}
-                </span>
               </div>
             </div>
           ))}
@@ -152,7 +148,9 @@ export default function Voting() {
             <img
               src={selectedImage.url}
               alt={`Photo ${selectedImage.id} - Full Size`}
-              className="max-w-full max-h-full object-contain"
+              className="max-w-full max-h-full object-contain blur-lg"
+              loading="lazy"
+              decoding="async"
               onClick={(e) => e.stopPropagation()}
             />
             <div className="absolute bottom-4 left-4 bg-black bg-opacity-50 text-white px-4 py-2 rounded-lg">
