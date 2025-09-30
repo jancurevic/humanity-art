@@ -13,6 +13,7 @@ const Index = () => {
     <div className="snap-y snap-mandatory h-screen overflow-y-scroll">
       {/* Hero Section */}
       <section
+        id="hero"
         className="snap-start h-screen flex items-center justify-center bg-background border-b border-border relative"
         style={{
           backgroundImage: `url(${heroImage})`,
@@ -35,7 +36,7 @@ const Index = () => {
       </section>
 
       {/* About Section */}
-      <section className="snap-start h-screen flex items-center justify-center bg-secondary border-b border-border relative">
+      <section id="about" className="snap-start h-screen flex items-center justify-center bg-secondary border-b border-border relative">
         {/* Background image with opacity */}
         <div 
           className="absolute inset-0 opacity-30 z-0"
@@ -56,20 +57,14 @@ const Index = () => {
       </section>
 
       {/* Voting Section */}
-      <section className="snap-start h-screen flex items-center justify-center bg-background border-b border-border">
-        <div className="w-full max-w-4xl px-4">
-          <h2 className="text-4xl md:text-6xl font-bold mb-8 text-foreground text-center">
-            Voting
-          </h2>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto text-center mb-8">
-            Choose your favorite pictures from the exhibition
-          </p>
+      <section id="voting" className="snap-start min-h-screen py-16 bg-background border-b border-border">
+        <div className="w-full max-w-6xl mx-auto px-4">
           <Voting />
         </div>
       </section>
 
       {/* Details Section */}
-      <section className="snap-start h-screen flex items-center justify-center bg-secondary border-b border-border relative">
+      <section id="details" className="snap-start h-screen flex items-center justify-center bg-secondary border-b border-border relative">
         {/* Background image with opacity */}
         <div
           className="absolute inset-0 opacity-30 z-0"
@@ -131,7 +126,7 @@ const Index = () => {
       </section>
 
       {/* Previous exhibition */}
-      <section className="snap-start h-screen flex items-center justify-center bg-background border-b border-border relative">
+      <section id="previous" className="snap-start h-screen flex items-center justify-center bg-background border-b border-border relative">
         {/* Background image with opacity */}
         <div 
           className="absolute inset-0 opacity-30 z-0"
