@@ -91,7 +91,7 @@ export default function Voting() {
                 <div className="flex items-center space-x-2">
                   <button 
                     onClick={() => handleVote(img.id)} 
-                    disabled={userVotes.length > 0 && !userVotes.includes(img.id)}
+                    disabled={true}//userVotes.length > 0 && !userVotes.includes(img.id)}
                     className={`p-2 rounded-full transition-all hover:scale-110 ${
                       userVotes.includes(img.id) 
                         ? 'text-red-500 hover:text-red-600' 
