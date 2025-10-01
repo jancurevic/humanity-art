@@ -69,14 +69,14 @@ export default function Voting() {
     <div className="min-h-screen bg-background p-4">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-4xl md:text-6xl font-bold mb-8 text-foreground text-center">
-          Vote for Your Favorite
+          Vote for Your Favorite - Will be enabled after the start of exhibition
         </h1>
         <p className="text-lg text-muted-foreground text-center mb-8 max-w-2xl mx-auto">
           Tap the heart ♥ to vote for your favorite image. You can only vote once.
         </p>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {images.map(img => (
+          {images.slice(0,6).map(img => (
             <div key={img.id} className="bg-card rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
               <div className="aspect-square overflow-hidden cursor-pointer" onClick={() => setSelectedImage(img)}>
                 <img 
