@@ -12,10 +12,6 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
-console.log("API key length:", import.meta.env.VITE_FIREBASE_API_KEY?.length || "MISSING");
-console.log("API key starts with:", import.meta.env.VITE_FIREBASE_API_KEY?.slice(0, 5) || "MISSING");
-
-
 const app = initializeApp(firebaseConfig);
 
 // Export Firestore and Auth instances
