@@ -60,8 +60,10 @@ jobs:
           VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID }}
           VITE_FIREBASE_MEASUREMENT_ID: ${{ secrets.VITE_FIREBASE_MEASUREMENT_ID }}
 
-      - name: Add .nojekyll
-        run: touch ./dist/.nojekyll
+      - name: Add .nojekyll and setup SPA routing
+        run: |
+          touch ./dist/.nojekyll
+          cp ./dist/index.html ./dist/404.html
 
       - name: Add CNAME
         run: echo "humanityproject.eu" > ./dist/CNAME
