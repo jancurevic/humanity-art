@@ -8,6 +8,25 @@
 
     <meta property="og:title" content="Humanity Exhibition" />
     <meta property="og:type" content="website" />
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZJX7QGHPXP"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      
+      gtag('config', 'G-ZJX7QGHPXP', {
+        // Enhanced tracking for better unique user detection
+        send_page_view: true,
+        anonymize_ip: true,
+        allow_google_signals: true,
+        cookie_expires: 63072000, // 2 years
+        custom_map: {
+          'custom_parameter_1': 'exhibition_visit'
+        }
+      });
+    </script>
   </head>
 
   <body>
