@@ -68,9 +68,6 @@ export default function Voting() {
   return (
     <div className="min-h-screen bg-background p-4">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl md:text-6xl font-bold mb-8 text-foreground text-center">
-          Vote for Your Favorite - Will be enabled after the start of exhibition
-        </h1>
         <p className="text-lg text-muted-foreground text-center mb-8 max-w-2xl mx-auto">
           Tap the heart ♥ to vote for your favorite image. You can only vote once.
         </p>
@@ -82,7 +79,7 @@ export default function Voting() {
                 <img 
                   src={img.url} 
                   alt={`Photo ${img.id}`} 
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300 blur-lg"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                   loading="lazy"
                   decoding="async"
                 />
@@ -91,7 +88,7 @@ export default function Voting() {
                 <div className="flex items-center space-x-2">
                   <button 
                     onClick={() => handleVote(img.id)} 
-                    disabled={true}//userVotes.length > 0 && !userVotes.includes(img.id)}
+                    disabled={userVotes.length > 0 && !userVotes.includes(img.id)}
                     className={`p-2 rounded-full transition-all hover:scale-110 ${
                       userVotes.includes(img.id) 
                         ? 'text-red-500 hover:text-red-600' 
@@ -148,13 +145,12 @@ export default function Voting() {
             <img
               src={selectedImage.url}
               alt={`Photo ${selectedImage.id} - Full Size`}
-              className="max-w-full max-h-full object-contain blur-lg"
+              className="max-w-full max-h-full object-contain"
               loading="lazy"
               decoding="async"
               onClick={(e) => e.stopPropagation()}
             />
             <div className="absolute bottom-4 left-4 bg-black bg-opacity-50 text-white px-4 py-2 rounded-lg">
-              <p className="text-sm">Photo {selectedImage.id}</p>
               <p className="text-xs opacity-75">Click outside to close</p>
             </div>
           </div>
