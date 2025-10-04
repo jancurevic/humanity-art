@@ -1,10 +1,10 @@
-import heroImage from "../assets/hero.JPG";
+import heroImage from "../assets/optimized/hero.jpg";
 import ethiopiaTitle from "../assets/ethiopia-title.svg";
 import humanityTitle from "../assets/humanity.svg";
-import detailsImage from "../assets/hero2.JPG";
-import aboutImage from "../assets/hero3.JPG";
-import prevImage from "../assets/prev.jpg";
-import contactImage from "../assets/contact.jpg";
+import detailsImage from "../assets/optimized/hero2.jpg";
+import aboutImage from "../assets/optimized/hero3.jpg";
+import prevImage from "../assets/optimized/prev.jpg";
+import contactImage from "../assets/optimized/contact.jpg";
 
 import Voting from "./Voting";
 

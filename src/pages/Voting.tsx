@@ -76,7 +76,7 @@ export default function Voting() {
         </p>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {images.slice(0,6).map(img => (
+          {images.map(img => (
             <div key={img.id} className="bg-card rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
               <div className="aspect-square overflow-hidden cursor-pointer" onClick={() => setSelectedImage(img)}>
                 <img 
