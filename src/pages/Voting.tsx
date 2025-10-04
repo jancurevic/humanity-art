@@ -1,25 +1,41 @@
 import { useEffect, useState } from "react";
 import { db, auth } from "../firebase";
 import { doc, getDoc, setDoc, arrayUnion, increment, onSnapshot } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
 import { images } from "./images";
 
 
 
 export default function Voting() {
   const [userVotes, setUserVotes] = useState([]);
+  const [hasUserVoted, setHasUserVoted] = useState(false);
   const [votesCount, setVotesCount] = useState({});
   const [selectedImage, setSelectedImage] = useState(null);
+  const [isLoadingUserData, setIsLoadingUserData] = useState(true);
 
   // Load user votes and set up real-time vote count listeners
   useEffect(() => {
-    const loadUserVotes = async () => {
-      if (!auth.currentUser) return;
+    const loadUserVotes = async (user) => {
+      if (!user) {
+        setIsLoadingUserData(false);
+        return;
+      }
 
-      const userDoc = doc(db, "votes", auth.currentUser.uid);
+      const userDoc = doc(db, "votes", user.uid);
       const docSnap = await getDoc(userDoc);
-      if (docSnap.exists()) setUserVotes(docSnap.data().votedImages || []);
-      else setUserVotes([]);
+      if (docSnap.exists()) {
+        setUserVotes(docSnap.data().votedImages || []);
+        setHasUserVoted((docSnap.data().votedImages || []).length > 0);
+      } else {
+        setUserVotes([]);
+      }
+      setIsLoadingUserData(false);
     };
+
+    // Wait for auth state to be ready
+    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
+      loadUserVotes(user);
+    });
 
     // Set up real-time listeners for vote counts
     const setupVoteCountListeners = () => {
@@ -40,17 +56,18 @@ export default function Voting() {
       return unsubscribers;
     };
 
-    loadUserVotes();
     const unsubscribers = setupVoteCountListeners();
 
     // Cleanup function to unsubscribe from all listeners
     return () => {
+      unsubscribeAuth();
       unsubscribers.forEach(unsubscribe => unsubscribe());
     };
   }, []);
 
   const handleVote = async (imageId) => {
-    if (userVotes.includes(imageId)) return; // already voted
+    // Prevent voting while data is loading or if user already voted
+    if (isLoadingUserData || hasUserVoted) return;
 
     // Add image to user's votedImages
     const userDoc = doc(db, "votes", auth.currentUser.uid);
@@ -62,6 +79,7 @@ export default function Voting() {
 
     // Update UI
     setUserVotes([...userVotes, imageId]);
+    setHasUserVoted(true);
     setVotesCount({ ...votesCount, [imageId]: (votesCount[imageId] || 0) + 1 });
   };
 
@@ -91,11 +109,11 @@ export default function Voting() {
                 <div className="flex items-center space-x-2">
                   <button 
                     onClick={() => handleVote(img.id)} 
-                    disabled={userVotes.length > 0 && !userVotes.includes(img.id)}
+                    disabled={isLoadingUserData || hasUserVoted}
                     className={`p-2 rounded-full transition-all hover:scale-110 ${
                       userVotes.includes(img.id) 
                         ? 'text-red-500 hover:text-red-600' 
-                        : userVotes.length > 0 
+                        : userVotes.length > 0 || isLoadingUserData
                           ? 'text-muted-foreground cursor-not-allowed'
                           : 'text-muted-foreground hover:text-red-500'
                     }`}
