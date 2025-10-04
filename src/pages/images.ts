@@ -40,7 +40,7 @@ import image39 from "../assets/vote/optimized/39.jpg";
 import image40 from "../assets/vote/optimized/40.jpg";
 import image41 from "../assets/vote/optimized/41.jpg";
 import image42 from "../assets/vote/optimized/42.jpg";
-import image43 from "../assets/optimized/hero3.JPG";
+import image43 from "../assets/optimized/hero3.jpg";
 
 export const images = [
   { id: "1", url: image1 },
