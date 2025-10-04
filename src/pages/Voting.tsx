@@ -68,6 +68,9 @@ export default function Voting() {
   return (
     <div className="min-h-screen bg-background p-4">
       <div className="max-w-6xl mx-auto">
+        <h1 className="text-4xl md:text-6xl font-bold mb-8 text-foreground text-center">
+          Vote for Your Favorite
+        </h1>
         <p className="text-lg text-muted-foreground text-center mb-8 max-w-2xl mx-auto">
           Tap the heart ♥ to vote for your favorite image. You can only vote once.
         </p>
