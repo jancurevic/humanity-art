@@ -1,178 +1,120 @@
-import { useEffect, useState } from "react";
-import { db, auth } from "../firebase";
-import { doc, getDoc, setDoc, arrayUnion, increment, onSnapshot } from "firebase/firestore";
-import { onAuthStateChanged } from "firebase/auth";
+import { useState, useEffect } from "react";
 import { images } from "./images";
 
-
-
 export default function Voting() {
-  const [userVotes, setUserVotes] = useState([]);
-  const [hasUserVoted, setHasUserVoted] = useState(false);
-  const [votesCount, setVotesCount] = useState({});
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [isLoadingUserData, setIsLoadingUserData] = useState(true);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(null);
 
-  // Load user votes and set up real-time vote count listeners
-  useEffect(() => {
-    const loadUserVotes = async (user) => {
-      if (!user) {
-        setIsLoadingUserData(false);
-        return;
-      }
-
-      const userDoc = doc(db, "votes", user.uid);
-      const docSnap = await getDoc(userDoc);
-      if (docSnap.exists()) {
-        setUserVotes(docSnap.data().votedImages || []);
-        setHasUserVoted((docSnap.data().votedImages || []).length > 0);
-      } else {
-        setUserVotes([]);
-      }
-      setIsLoadingUserData(false);
-    };
-
-    // Wait for auth state to be ready
-    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
-      loadUserVotes(user);
-    });
-
-    // Set up real-time listeners for vote counts
-    const setupVoteCountListeners = () => {
-      const unsubscribers = [];
-      
-      images.forEach(img => {
-        const imageDoc = doc(db, "images", img.id);
-        const unsubscribe = onSnapshot(imageDoc, (docSnapshot) => {
-          const votes = docSnapshot.exists() ? docSnapshot.data().votes || 0 : 0;
-          setVotesCount(prevCounts => ({
-            ...prevCounts,
-            [img.id]: votes
-          }));
-        });
-        unsubscribers.push(unsubscribe);
-      });
-
-      return unsubscribers;
-    };
-
-    const unsubscribers = setupVoteCountListeners();
-
-    // Cleanup function to unsubscribe from all listeners
-    return () => {
-      unsubscribeAuth();
-      unsubscribers.forEach(unsubscribe => unsubscribe());
-    };
-  }, []);
-
-  const handleVote = async (imageId) => {
-    // Prevent voting while data is loading or if user already voted
-    if (isLoadingUserData || hasUserVoted) return;
-
-    // Add image to user's votedImages
-    const userDoc = doc(db, "votes", auth.currentUser.uid);
-    await setDoc(userDoc, { votedImages: arrayUnion(imageId) }, { merge: true });
-
-    // Increment total votes for the image
-    const imgDoc = doc(db, "images", imageId);
-    await setDoc(imgDoc, { votes: increment(1) }, { merge: true });
-
-    // Update UI
-    setUserVotes([...userVotes, imageId]);
-    setHasUserVoted(true);
-    setVotesCount({ ...votesCount, [imageId]: (votesCount[imageId] || 0) + 1 });
+  const openImage = (index) => {
+    setSelectedImageIndex(index);
   };
+
+  const closeImage = () => {
+    setSelectedImageIndex(null);
+  };
+
+  const goToPrevious = () => {
+    if (selectedImageIndex !== null) {
+      setSelectedImageIndex((prev) => 
+        prev === 0 ? images.length - 1 : prev - 1
+      );
+    }
+  };
+
+  const goToNext = () => {
+    if (selectedImageIndex !== null) {
+      setSelectedImageIndex((prev) => 
+        prev === images.length - 1 ? 0 : prev + 1
+      );
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (selectedImageIndex !== null) {
+      if (e.key === 'ArrowLeft') goToPrevious();
+      if (e.key === 'ArrowRight') goToNext();
+      if (e.key === 'Escape') closeImage();
+    }
+  };
+
 
   return (
     <div className="min-h-screen bg-background p-4">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-4xl md:text-6xl font-bold mb-8 text-foreground text-center">
-          Vote for Your Favorite
+          Gallery
         </h1>
         <p className="text-lg text-muted-foreground text-center mb-8 max-w-2xl mx-auto">
-          Tap the heart ♥ to vote for your favorite image. You can only vote once.
+          Click on any image to view it in full size.
         </p>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {images.map(img => (
-            <div key={img.id} className="bg-card rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-              <div className="aspect-square overflow-hidden cursor-pointer" onClick={() => setSelectedImage(img)}>
-                <img 
-                  src={img.url} 
-                  alt={`Photo ${img.id}`} 
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
-              <div className="p-4 flex items-center justify-center">
-                <div className="flex items-center space-x-2">
-                  <button 
-                    onClick={() => handleVote(img.id)} 
-                    disabled={isLoadingUserData || hasUserVoted}
-                    className={`p-2 rounded-full transition-all hover:scale-110 ${
-                      userVotes.includes(img.id) 
-                        ? 'text-red-500 hover:text-red-600' 
-                        : userVotes.length > 0 || isLoadingUserData
-                          ? 'text-muted-foreground cursor-not-allowed'
-                          : 'text-muted-foreground hover:text-red-500'
-                    }`}
-                  >
-                    <svg 
-                      className="w-8 h-8" 
-                      fill={userVotes.includes(img.id) ? "currentColor" : "none"}
-                      stroke="currentColor" 
-                      viewBox="0 0 24 24"
-                    >
-                      <path 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round" 
-                        strokeWidth={2} 
-                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" 
-                      />
-                    </svg>
-                  </button>
-                  <span className="text-lg font-medium text-foreground">
-                    {votesCount[img.id] || 0}
-                  </span>
-                </div>
-              </div>
+        {/* Grid layout - 4 images per row */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {images.map((img, index) => (
+            <div 
+              key={img.id} 
+              className="aspect-square overflow-hidden cursor-pointer bg-card rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+              onClick={() => openImage(index)}
+            >
+              <img 
+                src={img.url} 
+                alt={`Photo ${img.id}`} 
+                className="w-full h-full object-cover"
+                loading="lazy"
+                decoding="async"
+              />
             </div>
           ))}
         </div>
-        
-        {userVotes.length > 0 && (
-          <div className="mt-8 text-center">
-            <p className="text-lg font-semibold">
-              Thank you for voting! Your vote has been recorded.
-            </p>
-          </div>
-        )}
       </div>
 
-      {/* Full-size image modal */}
-      {selectedImage && (
+      {/* Full-size image modal with navigation */}
+      {selectedImageIndex !== null && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 p-4"
-          onClick={() => setSelectedImage(null)}
+          className="fixed inset-0 bg-black bg-opacity-95 flex items-center justify-center z-50 p-2 md:p-4"
+          onClick={closeImage}
         >
-          <div className="relative max-w-full max-h-full">
-            <button
-              onClick={() => setSelectedImage(null)}
-              className="absolute top-4 right-4 text-white text-2xl bg-black bg-opacity-50 rounded-full w-10 h-10 flex items-center justify-center hover:bg-opacity-70 transition-all z-10"
-            >
-              ×
-            </button>
+          {/* Close button */}
+          <button
+            onClick={closeImage}
+            className="absolute top-2 right-2 md:top-4 md:right-4 text-white text-2xl bg-black bg-opacity-70 rounded-full w-10 h-10 md:w-12 md:h-12 flex items-center justify-center hover:bg-opacity-90 transition-all z-10 touch-manipulation"
+          >
+            ×
+          </button>
+
+          {/* Previous arrow - fixed to screen edge */}
+          <button
+            onClick={(e) => { e.stopPropagation(); goToPrevious(); }}
+            className="absolute left-2 md:left-8 top-1/2 transform -translate-y-1/2 text-white bg-black bg-opacity-70 rounded-full w-10 h-10 md:w-12 md:h-12 flex items-center justify-center hover:bg-opacity-90 transition-all z-10 touch-manipulation"
+          >
+            <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+
+          {/* Next arrow - fixed to screen edge */}
+          <button
+            onClick={(e) => { e.stopPropagation(); goToNext(); }}
+            className="absolute right-2 md:right-8 top-1/2 transform -translate-y-1/2 text-white bg-black bg-opacity-70 rounded-full w-10 h-10 md:w-12 md:h-12 flex items-center justify-center hover:bg-opacity-90 transition-all z-10 touch-manipulation"
+          >
+            <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+
+          <div className="relative max-w-full max-h-full flex items-center justify-center">
+            {/* Main image */}
             <img
-              src={selectedImage.url}
-              alt={`Photo ${selectedImage.id} - Full Size`}
-              className="max-w-full max-h-full object-contain"
-              loading="lazy"
-              decoding="async"
-              onClick={(e) => e.stopPropagation()}
+              src={images[selectedImageIndex].url}
+              alt={`Photo ${images[selectedImageIndex].id} - Full Size`}
+              className="max-w-full max-h-full object-contain select-none"
+              draggable={false}
             />
-            <div className="absolute bottom-4 left-4 bg-black bg-opacity-50 text-white px-4 py-2 rounded-lg">
-              <p className="text-xs opacity-75">Click outside to close</p>
+
+            {/* Image counter */}
+            <div className="absolute bottom-2 md:bottom-4 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-70 text-white px-3 py-1 md:px-4 md:py-2 rounded-lg">
+              <p className="text-xs md:text-sm">
+                {selectedImageIndex + 1} of {images.length}
+              </p>
             </div>
           </div>
         </div>
