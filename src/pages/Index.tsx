@@ -63,7 +63,7 @@ const Index = () => {
       </section>
 
       {/* Details Section */}
-      <section id="details" className="snap-start h-screen flex items-center justify-center bg-secondary border-b border-border relative">
+      {/* <section id="details" className="snap-start h-screen flex items-center justify-center bg-secondary border-b border-border relative">
         <div
           className="absolute inset-0 opacity-30 z-0"
           style={{
@@ -121,7 +121,7 @@ const Index = () => {
 
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Previous exhibition */}
       <section id="previous" className="snap-start h-screen flex items-center justify-center bg-background border-b border-border relative">
